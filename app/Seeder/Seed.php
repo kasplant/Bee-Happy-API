@@ -33,6 +33,7 @@ class Seed {
             "user_id" => 1,
             "name" => "Hive",
             "queen_id" => 1,
+            "weight" => 35,
         ];
 
         for ($i=0; $i < 10; $i++) {

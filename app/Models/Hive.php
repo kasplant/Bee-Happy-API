@@ -37,13 +37,14 @@ class Hive {
 
         $query = "
         INSERT INTO hives
-        (user_id, name, queen_id)
-        VALUES (:user_id, :name, :queen_id)
+        (user_id, name, queen_id, weight)
+        VALUES (:user_id, :name, :queen_id, :weight)
         ";
         Database::query($query, [
-            ":user_id" => $data['user_id'],
-            ":name" => $data['name'],
+            ":user_id"  => $data['user_id'],
+            ":name"     => $data['name'],
             ":queen_id" => $data['queen_id'],
+            ":weight"   => $data['weight'] ?? null,
         ]);
         $lastID = Database::lastInsertId();
 
@@ -55,7 +56,7 @@ class Hive {
             return ['error' => 'No id given'];
         }
 
-        $updateableFields = ['name', 'queen_id'];
+        $updateableFields = ['name', 'queen_id', 'weight'];
         $setParts = [];
         $params = ['id' => $data['id'], 'updated_at' => date('Y-m-d H:i:s')];
 
@@ -98,7 +99,7 @@ class Hive {
 
         $query = "
         UPDATE hives
-        SET temperature = :temp, humidity = :hum
+        SET temperature = :temp, humidity = :hum, weight = :weight
         WHERE id = :id;
         SELECT ROW_COUNT()
         AS updated_rows;
@@ -108,7 +109,8 @@ class Hive {
             $updated = Database::query($query, [
                 ':id' => $data['id'],
                 ':temp' => $data['temperature'],
-                ':hum' => $data['humidity']
+                ':hum' => $data['humidity'],
+                ':weight' => $data['weight'] ?? null,
             ]);
 
             if ($updated > 0) {
