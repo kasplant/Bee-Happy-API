@@ -17,6 +17,7 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
       - MYSQL_DATABASE=bee_db
+      - TZ=Europe/Amsterdam
   db:
     image: mysql
     container_name: bee_db
@@ -26,6 +27,7 @@ services:
       MYSQL_DATABASE: bee_db
       MYSQL_USER: admin
       MYSQL_PASSWORD: root
+      TZ: Europe/Amsterdam
     volumes:
       - db_data:/var/lib/mysql
     ports:
