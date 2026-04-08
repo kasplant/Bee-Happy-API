@@ -6,6 +6,7 @@ use App\Database\Database;
 use App\Models\Hive;
 use App\Models\Queen;
 use App\Models\Inspection;
+use App\Models\Weight;
 
 class Seed {
 
@@ -25,6 +26,7 @@ class Seed {
         $this->seedQueen();
         $this->seedHive();
         $this->seedInspection();
+        $this->seedWeight();
     }
 
 
@@ -50,6 +52,18 @@ class Seed {
             "clipped" => 0,
         ];
         Queen::create($data);
+    }
+
+    private function seedWeight(): void {
+    $data = [
+        "hive_id" => 1,
+        "weight" => 35.0,
+        "recorded_at" => date('Y-m-d H:i:s'),
+    ];
+
+    for ($i = 0; $i < 10; $i++) {
+        Weight::create($data);
+    }
     }
 
     private function seedInspection(): void {
