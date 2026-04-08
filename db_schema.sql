@@ -65,3 +65,15 @@ CREATE TABLE inspections (
         FOREIGN KEY (queen_id) REFERENCES queens(id)
         ON DELETE SET NULL
 );
+
+CREATE TABLE hive_weights (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    hive_id INT NOT NULL,
+    weight FLOAT NOT NULL,
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_hive_weights_hive_id
+        FOREIGN KEY (hive_id) REFERENCES hives(id)
+        ON DELETE CASCADE
+);
