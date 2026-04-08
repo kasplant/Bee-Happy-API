@@ -17,6 +17,7 @@ return [
         'hive-weights' => [App\Http\Controllers\WeightController::class, 'getAllFromHive'],
 
         'seed' => [App\Seeder\Seed::class, 'seed'],
+        'reseed' => [App\Seeder\Seed::class, 'reseed'],
     ],
     // Create
     'POST' => [

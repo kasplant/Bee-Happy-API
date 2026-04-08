@@ -10,7 +10,9 @@ use App\Models\Weight;
 
 class Seed {
 
-    public function seed(): void {
+    public function seed(): array {
+        $this->clearTables();
+
         $sql = "
         INSERT INTO users
         (firstname, lastname, email, password)
@@ -27,8 +29,24 @@ class Seed {
         $this->seedHive();
         $this->seedInspection();
         $this->seedWeight();
+
+        return [
+            'message' => 'Database reseeded',
+            'seeded' => [
+                'users' => 1,
+                'queens' => 1,
+                'hives' => 10,
+                'inspections' => 10,
+                'weights' => 10,
+            ],
+        ];
     }
 
+    public function reseed(): void {
+        $this->seed();
+        header('Location: /', true, 302);
+        exit;
+    }
 
     private function seedHive(): void {
         $data = [
@@ -54,18 +72,6 @@ class Seed {
         Queen::create($data);
     }
 
-    private function seedWeight(): void {
-    $data = [
-        "hive_id" => 1,
-        "weight" => 35.0,
-        "recorded_at" => date('Y-m-d H:i:s'),
-    ];
-
-    for ($i = 0; $i < 10; $i++) {
-        Weight::create($data);
-    }
-    }
-
     private function seedInspection(): void {
         $data = [
             "user_id" => 1,
@@ -88,5 +94,27 @@ class Seed {
             Inspection::create($data);
         }
 
+    }
+
+    private function seedWeight(): void {
+        $weight = 35.0;
+        for ($i = 0; $i < 10; $i++) {
+            Weight::create([
+                "hive_id" => 1,
+                "weight" => $weight,
+                "recorded_at" => date('Y-m-d H:i:s', strtotime("-{$i} days")),
+            ]);
+            $weight += 0.5;
+        }
+    }
+
+    private function clearTables(): void {
+        Database::query('SET FOREIGN_KEY_CHECKS = 0');
+        Database::query('TRUNCATE TABLE hive_weights');
+        Database::query('TRUNCATE TABLE inspections');
+        Database::query('TRUNCATE TABLE hives');
+        Database::query('TRUNCATE TABLE queens');
+        Database::query('TRUNCATE TABLE users');
+        Database::query('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
