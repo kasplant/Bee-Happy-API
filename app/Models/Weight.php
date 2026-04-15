@@ -35,7 +35,7 @@ class Weight {
             SELECT *
             FROM hive_weights
             WHERE hive_id = :hive_id
-            ORDER BY recorded_at DESC
+            ORDER BY created_at DESC
         ";
         Database::query($query, [
             ":hive_id" => $hiveId,
@@ -51,19 +51,16 @@ class Weight {
         $query = "
         INSERT INTO hive_weights (
             hive_id,
-            weight,
-            recorded_at
+            weight
         )
         VALUES (
             :hive_id,
-            :weight,
-            :recorded_at
+            :weight
         )
         ";
         Database::query($query, [
             ":hive_id" => $data['hive_id'],
             ":weight" => $data['weight'],
-            ":recorded_at" => $data['recorded_at'] ?? date('Y-m-d H:i:s'),
         ]);
         $lastID = Database::lastInsertId();
 
@@ -75,7 +72,7 @@ class Weight {
             return ['error' => 'No id given'];
         }
 
-        $updateableFields = ['hive_id', 'weight', 'recorded_at'];
+        $updateableFields = ['hive_id', 'weight'];
         $setParts = [];
         $params = ['id' => $data['id'], 'updated_at' => date('Y-m-d H:i:s')];
 
