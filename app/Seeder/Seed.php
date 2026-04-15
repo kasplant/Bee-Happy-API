@@ -102,7 +102,6 @@ class Seed {
             Weight::create([
                 "hive_id" => 1,
                 "weight" => $weight,
-                "recorded_at" => date('Y-m-d H:i:s', strtotime("-{$i} days")),
             ]);
             $weight += 0.5;
         }
